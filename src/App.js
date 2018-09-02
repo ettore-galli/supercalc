@@ -14,14 +14,11 @@ import SuperCalcComponent from './components/common/SuperCalcComponent';
 import ChangeTitleButton from './components/common/ChangeTitleButton'
 import InputGrid from './components/InputGrid';
 
-
-
 class App extends SuperCalcComponent {
 
   componentDidMount() {
     this.SuperCalcStatus.addForceUpdateComponent(this);
     this.SuperCalcStatus.setTitle("Super Calculator");
-    this.SuperCalcStatus.fillWithTestData();
   }
 
   render() {
@@ -30,7 +27,7 @@ class App extends SuperCalcComponent {
         primary: red,
       },
     });
-    
+
     return (
       <MuiThemeProvider theme={theme}>
         <div>

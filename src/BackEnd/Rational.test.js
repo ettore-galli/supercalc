@@ -5,6 +5,21 @@ it('parses a number', () => {
   expect(ra).toEqual([3141500000, 1000000000])
 });
 
+it('parses a not-a-number (blank)', () => {
+  let ra = Rational.parse("");
+  expect(ra).toEqual(Rational.__ZERO)
+});
+
+it('parses a not-a-number (string)', () => {
+  let ra = Rational.parse("nonsonounnumero");
+  expect(ra).toEqual(Rational.__NAN)
+});
+
+it('parses a not-anumber (string) with default', () => {
+  let ra = Rational.parse("nonsonounnumero", Rational.__ONE);
+  expect(ra).toEqual(Rational.__ONE.slice())
+});
+
 it('sum works', () => {
   let a = Rational.parse("0.1");
   let b = Rational.parse("0.2");
@@ -31,4 +46,9 @@ it('division works', () => {
   let b = Rational.parse("5.1");
   let c = Rational.div(a, b);
   expect(c).toEqual([1411764705, 1000000000])
+});
+
+it('transparent string works', () => {
+  let s = Rational.transparent_string([3141500000, 1000000000]);
+  expect(s).toEqual("3.1415")
 });

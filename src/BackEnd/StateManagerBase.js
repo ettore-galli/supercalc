@@ -2,7 +2,7 @@ class StateManagerBase {
 
     // Instance management
     constructor() {
-        this.status = {};
+        this.applicationState = {};
         this.forceUpdateComponents = []
     }
 
