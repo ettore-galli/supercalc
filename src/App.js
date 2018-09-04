@@ -13,12 +13,12 @@ import red from '@material-ui/core/colors/red';
 import SuperCalcComponent from './components/common/SuperCalcComponent';
 import ChangeTitleButton from './components/common/ChangeTitleButton'
 import InputGrid from './components/InputGrid';
-
+import TotalsGrid from './components/TotalsGrid';
 class App extends SuperCalcComponent {
 
   componentDidMount() {
     this.SuperCalcStatus.addForceUpdateComponent(this);
-    this.SuperCalcStatus.setTitle("Super Calculator");
+    this.SuperCalcStatus.setTitle("Super! Calculator");
   }
 
   render() {
@@ -41,6 +41,7 @@ class App extends SuperCalcComponent {
           }>Ciao</Button>
           <ChangeTitleButton newTitle="Ciccio Pasticcio"></ChangeTitleButton>
           <InputGrid></InputGrid>
+          <TotalsGrid></TotalsGrid>
         </div>
       </MuiThemeProvider>
     );

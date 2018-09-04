@@ -19,7 +19,11 @@ class SuperCalcStateManager extends StateManagerBase {
         super()
         this.store = store;
         this.applicationState = { ...SuperCalcStateManager.__BLANK_STATUS };
-        this.__loadApplicationStateAndUpdate()
+        this.__loadApplicationState().then(
+            () => {
+                this.__doForceUpdate();
+            }
+        )
     }
 
     __loadApplicationState() {
@@ -31,16 +35,7 @@ class SuperCalcStateManager extends StateManagerBase {
         )
     }
 
-    __loadApplicationStateAndUpdate() {
-        return this.__loadApplicationState().then(
-            () => {
-                this.__doForceUpdate();
-            }
-        )
-    }
-
     __storeApplicationState(state) {
-        console.log("__storeApplicationState", state)
         return this.store.set(SuperCalcStateManager.__STATUS_KEY, state)
     }
 
@@ -75,18 +70,6 @@ class SuperCalcStateManager extends StateManagerBase {
                 return appState
             }
         )
-        // return this.__loadApplicationState().then(
-        //     (appState) => {
-        //         appState.list.title = title;
-        //         return appState
-        //     }
-        // ).then(
-        //     (appState) => {
-        //         this.__storeApplicationStateAndUpdate(
-        //             appState
-        //         )
-        //     }
-        // )
     }
 
     getTitle() {
@@ -107,25 +90,6 @@ class SuperCalcStateManager extends StateManagerBase {
                 return appState
             }
         )
-        // return this.__loadApplicationState().then(
-        //     (appState) => {
-        //         try {
-        //             if (rowId === null) {
-        //                 rowId = appState.list.items.push({}) - 1;
-        //             }
-        //             appState.list.items[rowId][fieldName] = fieldValue
-        //         } catch (e) {
-        //             console.log(e)
-        //         }
-        //         return appState
-        //     }
-        // ).then(
-        //     (appState) => {
-        //         this.__storeApplicationStateAndUpdate(
-        //             appState
-        //         )
-        //     }
-        // )
     }
 
     getItems() {
