@@ -7,7 +7,7 @@ it('parses a number', () => {
 
 it('parses a not-a-number (blank)', () => {
   let ra = Rational.parse("");
-  expect(ra).toEqual(Rational.__ZERO)
+  expect(ra).toEqual(Rational.__NAN)
 });
 
 it('parses a not-a-number (string)', () => {
@@ -17,6 +17,11 @@ it('parses a not-a-number (string)', () => {
 
 it('parses a not-anumber (string) with default', () => {
   let ra = Rational.parse("nonsonounnumero", Rational.__ONE);
+  expect(ra).toEqual(Rational.__ONE.slice())
+});
+
+it('parses blank as one', () => {
+  let ra = Rational.parse("", Rational.__ONE);
   expect(ra).toEqual(Rational.__ONE.slice())
 });
 

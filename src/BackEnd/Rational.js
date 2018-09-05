@@ -12,7 +12,7 @@ class Rational {
 
     static parse(f, defaultValue) {
         defaultValue = defaultValue || Rational.__NAN;
-        if (isNaN(f)) {
+        if (isNaN(f) || (f === "") || (f === null)) {
             return defaultValue;
         }
         const fs = String(f).replace(",", ".");
@@ -54,8 +54,13 @@ class Rational {
 
     static transparent_string(g) {
         if (typeof g === 'object') {
-            return String(Rational.float(g));
-        } else if (g != undefined) {
+            let floatOut = String(Rational.float(g));
+            if (floatOut) {
+                return floatOut;
+            } else {
+                return "";
+            }
+        } else if (g != undefined && g != null) {
             return g;
         } else {
             return "";

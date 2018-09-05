@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import { createMuiTheme } from '@material-ui/core/styles';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import red from '@material-ui/core/colors/red';
-
+import Paper from '@material-ui/core/Paper';
 
 // Own component import
 import SuperCalcComponent from './components/common/SuperCalcComponent';
@@ -35,13 +35,16 @@ class App extends SuperCalcComponent {
             {/* <Typography variant="subheading">{this.SuperCalcStatus.getTitle()}</Typography> */}
             {this.SuperCalcStatus.getTitle()}
           </AppBar>
-          <Button variant="raised" color="secondary" onClick={() => {
+          {/*           <Button variant="raised" color="secondary" onClick={() => {
             this.SuperCalcStatus.setTitle("La lalla")
           }
           }>Ciao</Button>
-          <ChangeTitleButton newTitle="Ciccio Pasticcio"></ChangeTitleButton>
+          <ChangeTitleButton newTitle="Ciccio Pasticcio"></ChangeTitleButton> */}
+
           <InputGrid></InputGrid>
+
           <TotalsGrid></TotalsGrid>
+
         </div>
       </MuiThemeProvider>
     );

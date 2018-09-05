@@ -2,6 +2,11 @@ import React from 'react'
 import Input from '@material-ui/core/Input';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import SuperCalcComponent from './common/SuperCalcComponent';
 import SuperCalcRowDefinition from '../BackEnd/SuperCalcRowDefinition';
 import SuperCalcEngine from '../BackEnd/SuperCalcEngine';
@@ -20,13 +25,14 @@ class InputGridRow extends SuperCalcComponent {
 
     render() {
         return (
-            <tr>
+            <TableRow>
                 {
                     SuperCalcRowDefinition.inputFields.map(
                         (row, index) => {
                             let field_name = row.field_name;
                             return (
-                                <td key={index}>
+                                <TableCell
+                                    key={index}>
                                     <TextField
                                         onChange={(event) => {
                                             this.SuperCalcStatus.setRowFieldValue(this.props.rowIndex, field_name, event.target.value)
@@ -34,20 +40,24 @@ class InputGridRow extends SuperCalcComponent {
                                         name={field_name}
                                         value={this.getRowFieldValue(this.props.row, field_name)}>
                                     </TextField>
-                                </td>
+                                </TableCell>
                             )
                         }
                     )
                         .concat([
-                            <td key={SuperCalcRowDefinition.inputFields.length + 1}>
-                                <Typography
+                            <TableCell
+                                key={SuperCalcRowDefinition.inputFields.length + 1}
+                            >
+                                <TextField
                                     name="total_price"
-                                >{SuperCalcEngine.getFloatTotalPrice(this.props.row)}
-                                </Typography>
-                            </td>
+                                    readOnly={true}
+                                    value={SuperCalcEngine.getFloatTotalPrice(this.props.row)}
+                                >
+                                </TextField>
+                            </TableCell>
                         ])
                 }
-            </tr>
+            </TableRow>
         );
     }
 }

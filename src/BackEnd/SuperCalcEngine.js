@@ -41,7 +41,7 @@ class SuperCalcEngine {
         if (row) {
             return Rational.transparent_string(SuperCalcEngine.getRowWithTotalPrice(row).total_price)
         } else {
-            return null
+            return ""
         }
     }
 

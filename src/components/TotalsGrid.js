@@ -10,20 +10,20 @@ import Rational from '../BackEnd/Rational';
 class TotalsGrid extends SuperCalcComponent {
 
     renderTotalsList(all_totals) {
-        console.log(all_totals)
-        //return ""
         return (
             <Table>
                 <TableHead>
-                    <TableCell>Destinazione</TableCell>
-                    <TableCell>Totale</TableCell>
+                    <TableRow>
+                        <TableCell>Destinazione</TableCell>
+                        <TableCell numeric>Totale</TableCell>
+                    </TableRow>
                 </TableHead>
                 <TableBody>
                     {
                         Object.keys(all_totals.final_destination_1_totals).map(
-                            (entry) => {
+                            (entry, id) => {
                                 return (
-                                    <TableRow>
+                                    <TableRow key={id}>
                                         <TableCell>
                                             {entry}
                                         </TableCell>
