@@ -40,10 +40,10 @@ class App extends SuperCalcComponent {
           }
           }>Ciao</Button>
           <ChangeTitleButton newTitle="Ciccio Pasticcio"></ChangeTitleButton> */}
-
+          <TotalsGrid></TotalsGrid>
           <InputGrid></InputGrid>
 
-          <TotalsGrid></TotalsGrid>
+
 
         </div>
       </MuiThemeProvider>

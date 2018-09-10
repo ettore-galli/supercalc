@@ -21,16 +21,24 @@ class SuperCalcStateManager extends StateManagerBase {
         this.applicationState = { ...SuperCalcStateManager.__BLANK_STATUS };
         this.__loadApplicationState().then(
             () => {
+
                 this.__doForceUpdate();
             }
         )
+    }
+
+    __initApplicationState() {
+        if (this.applicationState === undefined) {
+            this.applicationState = { ...SuperCalcStateManager.__BLANK_STATUS };
+        }
     }
 
     __loadApplicationState() {
         return this.store.get(SuperCalcStateManager.__STATUS_KEY).then(
             (appState) => {
                 this.applicationState = appState;
-                return appState;
+                this.__initApplicationState();
+                return this.applicationState;
             }
         )
     }
@@ -77,6 +85,7 @@ class SuperCalcStateManager extends StateManagerBase {
     }
 
     setRowFieldValue(rowId, fieldName, fieldValue) {
+        console.log("setRowFieldValue", rowId, fieldName, fieldValue)
         return this.__setStateWorkflow(
             (appState) => {
                 try {

@@ -1,81 +1,85 @@
 import React from 'react'
-import InputGridRow from './InputGridRow';
+
 import SuperCalcComponent from './common/SuperCalcComponent';
-import SuperCalcEngine from '../BackEnd/SuperCalcEngine';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TextField from '@material-ui/core/TextField';
 import SuperCalcRowDefinition from '../BackEnd/SuperCalcRowDefinition';
-import StringProcessor from '../BackEnd/StringProcessor';
+
+import TextField from '@material-ui/core/TextField';
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
+
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 class InputGrid extends SuperCalcComponent {
 
-    renderHeader() {
-        return (
-            <TableRow>
-                {
-                    SuperCalcRowDefinition.inputFields.map(
-                        (item, index) => {
-                            let caption = StringProcessor.createHeaderFromFieldName(item.field_name);
-                            return (
-                                <TableCell
-                                    key={index}>
-                                    <TextField
-                                        readOnly={true}
-                                        name={item.field_name}
-                                        value={caption}>
-                                    </TextField>
-                                </TableCell>
-                            )
-                        }
-                    )
-                }
-            </TableRow>
-
-        )
-    }
-    renderItemsList(items) {
-        return items.map(
-            (item, i) => {
-                return (
-                    <InputGridRow
-                        row={item}
-                        rowIndex={i}
-                        key={i}>
-                    </InputGridRow>
-                )
+    getItemFieldValue(item, field_name) {
+        if (item) {
+            if (item[field_name]) {
+                return item[field_name];
             }
-        ).concat([(
-            < InputGridRow
-                row={null}
-                rowIndex={null}
-                key={items.length}>
-            </InputGridRow >
+        }
+        return "";
+    }
+
+    getItemSummary(item) {
+        return this.getItemFieldValue(item, "item_name");
+    }
+
+    renderItemInputPanel(item, row_index) {
+        // Columns list 
+        const loadInputFields = SuperCalcRowDefinition.inputFields;
+
+        return (
+            <ExpansionPanel>
+                <ExpansionPanelSummary>{this.getItemSummary(item)}</ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    <Grid container>
+                        {loadInputFields.map((column, column_index) => {
+                            return (
+                                <Grid
+                                    key={column_index}
+                                    item xs={12}>
+                                    <TextField
+                                        label={column.field_name}
+                                        onChange={(event) => {
+                                            this.SuperCalcStatus.setRowFieldValue(
+                                                row_index,
+                                                column.field_name,
+                                                event.target.value)
+                                        }}
+                                        name={column.field_name}
+                                        value={this.getItemFieldValue(item, column.field_name)}>
+                                    </TextField>
+                                </Grid>
+                            );
+                        })}
+                    </Grid>
+                </ExpansionPanelDetails>
+            </ExpansionPanel>
+        );
+    }
+
+    renderInputList() {
+        // Get the list of items
+        const items_list = this.SuperCalcStatus.getItems();
+
+        return (
+            <div>
+                {items_list.map((item, index) => { return this.renderItemInputPanel(item, index) }).concat(
+                    [this.renderItemInputPanel(null, null)]
+                )
+
+                }
+            </div>
         )
-        ])
     }
 
     render() {
-        // Get the list of items
+        // Get the list of items¯
         const items_list = this.SuperCalcStatus.getItems();
         // Render the list
-        return (
-            <Table>
-                <TableHead>
-                    {
-                        this.renderHeader()
-                    }
-                </TableHead>
-                <TableBody>
-                    {
-                        this.renderItemsList(items_list)
-                    }
-                </TableBody>
-            </Table>
-        )
-
+        return this.renderInputList(items_list);
     }
 }
 
