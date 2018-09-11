@@ -31,7 +31,7 @@ class InputGrid extends SuperCalcComponent {
         const loadInputFields = SuperCalcRowDefinition.inputFields;
 
         return (
-            <ExpansionPanel>
+            <ExpansionPanel key={row_index}>
                 <ExpansionPanelSummary>{this.getItemSummary(item)}</ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Grid container>
@@ -66,9 +66,14 @@ class InputGrid extends SuperCalcComponent {
 
         return (
             <div>
-                {items_list.map((item, index) => { return this.renderItemInputPanel(item, index) }).concat(
-                    [this.renderItemInputPanel(null, null)]
-                )
+                { // Items in list
+                    items_list.map(
+                        (item, index) => {
+                            return this.renderItemInputPanel(item, index)
+                        }
+                    ).concat( // New item
+                        [this.renderItemInputPanel(null, null)]
+                    )
 
                 }
             </div>

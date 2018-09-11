@@ -5,44 +5,71 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
+import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import Rational from '../BackEnd/Rational';
+import { withStyles } from '@material-ui/core/styles';
+
+const tableCellCommonStyle = {
+    fontSize: 18
+}
+
+const CustomTableCell = withStyles({
+    root: {
+        ...tableCellCommonStyle
+    },
+    body: {
+        ...tableCellCommonStyle
+    },
+    footer: {
+        ...tableCellCommonStyle
+    }
+})(TableCell);
+
+
 class TotalsGrid extends SuperCalcComponent {
 
+
     renderTotalsList(all_totals) {
+        const totals_list = all_totals.final_destination_1_totals;
+        console.log((<TableCell></TableCell>));
         return (
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Destinazione</TableCell>
-                        <TableCell numeric>Totale</TableCell>
+                        <CustomTableCell>Destinazione
+                        </CustomTableCell>
+                        <CustomTableCell numeric>Totale
+                        </CustomTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {
-                        Object.keys(all_totals.final_destination_1_totals).map(
+                        Object.keys(totals_list).map(
                             (entry, id) => {
                                 return (
                                     <TableRow key={id}>
-                                        <TableCell>
+                                        <CustomTableCell>
                                             {entry}
-                                        </TableCell>
-                                        <TableCell numeric>
-                                            {Rational.float(all_totals.final_destination_1_totals[entry])}
-                                        </TableCell>
+                                        </CustomTableCell>
+                                        <CustomTableCell numeric>
+                                            {Rational.float(totals_list[entry])}
+                                        </CustomTableCell>
                                     </TableRow>
                                 )
                             }
 
                         )
                     }
-                    <TableRow>
-                        <TableCell>Totale</TableCell>
-                        <TableCell numeric>
-                            {Rational.float(all_totals.grand_total)}
-                        </TableCell>
-                    </TableRow>
                 </TableBody>
+                <TableFooter>
+                    <TableRow key={totals_list.length}>
+                        <CustomTableCell>TOTALE</CustomTableCell>
+                        <CustomTableCell numeric>
+                            {Rational.float(all_totals.grand_total)}
+                        </CustomTableCell>
+                    </TableRow>
+                </TableFooter>
             </Table>
         )
     }
