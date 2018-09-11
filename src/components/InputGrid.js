@@ -4,6 +4,7 @@ import SuperCalcComponent from './common/SuperCalcComponent';
 import SuperCalcRowDefinition from '../BackEnd/SuperCalcRowDefinition';
 
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
@@ -11,7 +12,56 @@ import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Dialog from '@material-ui/core/Dialog';
+
+
+class DeleteConfirmDialog extends SuperCalcComponent {
+    constructor(props) {
+        super(props)
+    }
+
+    handleOk(p) {
+        this.SuperCalcStatus.deleteRowByIndex(p.id);
+        this.props.closeDialog();
+    }
+
+    handleCancel() {
+        this.props.closeDialog();
+    }
+
+    render() {
+        return (
+            <Dialog
+                disableBackdropClick
+                disableEscapeKeyDown
+                open={this.props.open}
+                {...this.props}
+            >
+                <DialogTitle>Cancellare l'articolo?</DialogTitle>
+                <DialogContent>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => this.handleCancel(this.props)} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={() => this.handleOk(this.props)} color="primary">
+                        Ok
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+}
+
 class InputGrid extends SuperCalcComponent {
+    state = {
+        open: false,
+        idToDelete: null
+    };
 
     getItemFieldValue(item, field_name) {
         if (item) {
@@ -56,6 +106,9 @@ class InputGrid extends SuperCalcComponent {
                         })}
                     </Grid>
                 </ExpansionPanelDetails>
+                <ExpansionPanelActions>
+                    <Button onClick={() => { this.setState({ ...this.state, open: true, idToDelete: row_index }) }}>DELETE</Button>
+                </ExpansionPanelActions>
             </ExpansionPanel>
         );
     }
@@ -66,6 +119,12 @@ class InputGrid extends SuperCalcComponent {
 
         return (
             <div>
+                <DeleteConfirmDialog
+                    open={this.state.open}
+                    id={this.state.idToDelete}
+                    closeDialog={() => { this.setState({ ...this.state, open: false }) }}
+                >
+                </DeleteConfirmDialog>
                 { // Items in list
                     items_list.map(
                         (item, index) => {

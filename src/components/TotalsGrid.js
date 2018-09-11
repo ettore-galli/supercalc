@@ -32,7 +32,6 @@ class TotalsGrid extends SuperCalcComponent {
 
     renderTotalsList(all_totals) {
         const totals_list = all_totals.final_destination_1_totals;
-        console.log((<TableCell></TableCell>));
         return (
             <Table>
                 <TableHead>
