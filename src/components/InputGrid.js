@@ -72,7 +72,7 @@ class InputGrid extends SuperCalcComponent {
                             return this.renderItemInputPanel(item, index)
                         }
                     ).concat( // New item
-                        [this.renderItemInputPanel(null, null)]
+                        [this.renderItemInputPanel({}, items_list.length)]
                     )
 
                 }

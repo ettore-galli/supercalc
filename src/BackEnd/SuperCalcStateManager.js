@@ -89,10 +89,23 @@ class SuperCalcStateManager extends StateManagerBase {
         return this.__setStateWorkflow(
             (appState) => {
                 try {
-                    if (rowId === null) {
-                        rowId = appState.list.items.push({}) - 1;
+                    if (appState.list.items[rowId] === undefined) {
+                        appState.list.items.push({});
                     }
                     appState.list.items[rowId][fieldName] = fieldValue
+                } catch (e) {
+                    console.log(e)
+                }
+                return appState
+            }
+        )
+    }
+
+    deleteRowByIndex(rowId) {
+        return this.__setStateWorkflow(
+            (appState) => {
+                try {
+                    appState.list.items.splice(rowId, 1)
                 } catch (e) {
                     console.log(e)
                 }
