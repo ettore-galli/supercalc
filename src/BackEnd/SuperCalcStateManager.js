@@ -1,5 +1,4 @@
 import StateManagerBase from './StateManagerBase';
-import SimpleKeyStore from './SimpleKeyStore';
 
 class SuperCalcStateManager extends StateManagerBase {
 
@@ -7,7 +6,6 @@ class SuperCalcStateManager extends StateManagerBase {
     static appStatusInstance = null;
 
     // Constants
-    static __STATUS_KEY = "status"
     static __BLANK_STATUS = {
         list: {
             title: "",
@@ -15,67 +13,71 @@ class SuperCalcStateManager extends StateManagerBase {
         }
     };
     // Constructor
-    constructor(store) {
+    constructor() {
         super()
-        this.store = store;
         this.applicationState = { ...SuperCalcStateManager.__BLANK_STATUS };
-        this.__loadApplicationState().then(
-            () => {
-
-                this.__doForceUpdate();
-            }
-        )
-    }
-
-    __initApplicationState() {
-        if (this.applicationState === undefined) {
-            this.applicationState = { ...SuperCalcStateManager.__BLANK_STATUS };
-        }
-    }
-
-    __loadApplicationState() {
-        return this.store.get(SuperCalcStateManager.__STATUS_KEY).then(
-            (appState) => {
-                this.applicationState = appState;
-                this.__initApplicationState();
-                return this.applicationState;
-            }
-        )
-    }
-
-    __storeApplicationState(state) {
-        return this.store.set(SuperCalcStateManager.__STATUS_KEY, state)
-    }
-
-    __storeApplicationStateAndUpdate(state) {
-        return this.__storeApplicationState(state).then(
-            () => {
-                this.__loadApplicationState();
-            }
-        ).then(
-            () => {
-                this.__doForceUpdate();
-            }
-        )
     }
 
     __setStateWorkflow(stateUpdatecallback) {
-        return this.__loadApplicationState().then(
-            stateUpdatecallback // stateUpdatecallback(appState)
-        ).then(
-            (appState) => {
-                this.__storeApplicationStateAndUpdate(
-                    appState
-                )
-            }
-        )
+        stateUpdatecallback(this.applicationState) // stateUpdatecallback(appState)
+        this.__doForceUpdate();
+    }
+
+    setInitialStateWithNoForceUpdate(wholeAppState) {
+        if (wholeAppState){
+            this.applicationState = wholeAppState;
+        } else {
+            this.applicationState = SuperCalcStateManager.__BLANK_STATUS;
+        }
+        
+    }
+
+    setTitleCallback(appState, title) {
+        appState.list.title = title;
+        return appState;
     }
 
     setTitle(title) {
         return this.__setStateWorkflow(
             (appState) => {
-                appState.list.title = title;
-                return appState
+                return this.setTitleCallback(appState, title)
+            }
+        )
+    }
+
+    setRowFieldValueCallback(appState, rowId, fieldName, fieldValue) {
+        try {
+            if (appState.list.items[rowId] === undefined) {
+                appState.list.items.push({});
+            }
+            appState.list.items[rowId][fieldName] = fieldValue
+        } catch (e) {
+            console.log(e)
+        }
+        return appState
+    }
+
+    setRowFieldValue(rowId, fieldName, fieldValue) {
+        return this.__setStateWorkflow(
+            (appState) => {
+                return this.setRowFieldValueCallback(appState, rowId, fieldName, fieldValue)
+            }
+        )
+    }
+
+    deleteRowByIndexCallback(appState, rowId) {
+        try {
+            appState.list.items.splice(rowId, 1)
+        } catch (e) {
+            console.log(e)
+        }
+        return appState
+    }
+
+    deleteRowByIndex(rowId) {
+        return this.__setStateWorkflow(
+            (appState) => {
+                return this.deleteRowByIndexCallback(appState, rowId);
             }
         )
     }
@@ -84,43 +86,15 @@ class SuperCalcStateManager extends StateManagerBase {
         return this.applicationState.list.title;
     }
 
-    setRowFieldValue(rowId, fieldName, fieldValue) {
-        console.log("setRowFieldValue", rowId, fieldName, fieldValue)
-        return this.__setStateWorkflow(
-            (appState) => {
-                try {
-                    if (appState.list.items[rowId] === undefined) {
-                        appState.list.items.push({});
-                    }
-                    appState.list.items[rowId][fieldName] = fieldValue
-                } catch (e) {
-                    console.log(e)
-                }
-                return appState
-            }
-        )
-    }
-
-    deleteRowByIndex(rowId) {
-        return this.__setStateWorkflow(
-            (appState) => {
-                try {
-                    appState.list.items.splice(rowId, 1)
-                } catch (e) {
-                    console.log(e)
-                }
-                return appState
-            }
-        )
-    }
-
     getItems() {
         return this.applicationState.list.items.concat();
     }
 
+    getStatus() {
+        return this.applicationState;
+    }
+
 }
 
-const store = new SimpleKeyStore("supercalc-db", "supercalc-store");
-const superCalcStateManager = new SuperCalcStateManager(store);
-//Object.freeze(superCalcStateManager);
+const superCalcStateManager = new SuperCalcStateManager();
 export default superCalcStateManager;

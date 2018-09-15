@@ -17,7 +17,7 @@ class Rational {
         }
         const fs = String(f).replace(",", ".");
         const pdb = (fs.indexOf(".") > -1) ? fs.split(".") : [fs, "0"];
-        const n = parseInt([pdb[0], (pdb[1] + Rational.__APPENDABLE_ZEROS).substr(0, Rational.__SUPPORTED_DECIMAL_DIGITS)].join(""));
+        const n = parseInt([pdb[0], (pdb[1] + Rational.__APPENDABLE_ZEROS).substr(0, Rational.__SUPPORTED_DECIMAL_DIGITS)].join(""), 10);
         if (isNaN(n)) {
             return defaultValue;
         }
@@ -60,7 +60,7 @@ class Rational {
             } else {
                 return "";
             }
-        } else if (g != undefined && g != null) {
+        } else if (g !== undefined && g !== null) {
             return g;
         } else {
             return "";

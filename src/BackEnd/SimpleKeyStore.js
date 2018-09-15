@@ -70,19 +70,6 @@ class SimpleKeyStore {
             store.clear();
         });
     }
-    // keys() {
-    //     const keys = [];
-    //     return this._withIDBStore('readonly', store => {
-    //         // This would be this.getAllKeys(), but it isn't supported by Edge or Safari.
-    //         // And openKeyCursor isn't supported by Safari.
-    //         (this.openKeyCursor || this.openCursor).call(store).onsuccess = function () {
-    //             if (!this.result)
-    //                 return;
-    //             keys.push(this.result.key);
-    //             this.result.continue();
-    //         };
-    //     }).then(() => keys);
-    // }
 
 }
 

@@ -12,9 +12,16 @@ class StateManagerBase {
     __doForceUpdate() {
         this.forceUpdateComponents.forEach(element => {
             if (element.forceUpdate) {
-                element.forceUpdate();
+                element.setState({ ...element.state, update: true })
             }
         });
+    }
+
+    /**
+     * External entry point for doForceUpdate
+     */
+    doForceUpdate() {
+        this.__doForceUpdate()
     }
 
     /**
@@ -22,7 +29,9 @@ class StateManagerBase {
      * @param {*} component 
      */
     addForceUpdateComponent(component) {
-        this.forceUpdateComponents.push(component);
+        if (!this.forceUpdateComponents.includes(component)) {
+            this.forceUpdateComponents.push(component);
+        }
     }
 
 }

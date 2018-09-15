@@ -11,7 +11,8 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
+
+import Typography from "@material-ui/core/Typography";
 
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -20,9 +21,6 @@ import Dialog from '@material-ui/core/Dialog';
 
 
 class DeleteConfirmDialog extends SuperCalcComponent {
-    constructor(props) {
-        super(props)
-    }
 
     handleOk(p) {
         this.SuperCalcStatus.deleteRowByIndex(p.id);
@@ -60,7 +58,8 @@ class DeleteConfirmDialog extends SuperCalcComponent {
 class InputGrid extends SuperCalcComponent {
     state = {
         open: false,
-        idToDelete: null
+        idToDelete: null,
+        saving: false
     };
 
     getItemFieldValue(item, field_name) {
@@ -107,7 +106,7 @@ class InputGrid extends SuperCalcComponent {
                     </Grid>
                 </ExpansionPanelDetails>
                 <ExpansionPanelActions>
-                    <Button onClick={() => { this.setState({ ...this.state, open: true, idToDelete: row_index }) }}>DELETE</Button>
+                    <Button color="default" onClick={() => { this.setState({ ...this.state, open: true, idToDelete: row_index }) }}>DELETE</Button>
                 </ExpansionPanelActions>
             </ExpansionPanel>
         );
@@ -119,6 +118,7 @@ class InputGrid extends SuperCalcComponent {
 
         return (
             <div>
+                <Typography>{this.state.saving ? "SAVING" : "OK"}</Typography>
                 <DeleteConfirmDialog
                     open={this.state.open}
                     id={this.state.idToDelete}
