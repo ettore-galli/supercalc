@@ -13,13 +13,9 @@ class SuperCalcComponent extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.autoupdate) {
+        if (this.props.autoupdate || false) {
             this.SuperCalcStatus.addForceUpdateComponent(this);
         }
-    }
-
-    shouldComponentUpdate() {
-        return this.props.autoupdate || false;
     }
 
     saveDataWorkflow() {

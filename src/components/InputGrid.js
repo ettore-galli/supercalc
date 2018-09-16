@@ -1,66 +1,36 @@
 import React from 'react'
 
-import SuperCalcComponent from './common/SuperCalcComponent';
-import SuperCalcRowDefinition from '../BackEnd/SuperCalcRowDefinition';
-
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
-
 import Grid from "@material-ui/core/Grid";
 
-import Typography from "@material-ui/core/Typography";
-
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Dialog from '@material-ui/core/Dialog';
-
-
-class DeleteConfirmDialog extends SuperCalcComponent {
-
-    handleOk(p) {
-        this.SuperCalcStatus.deleteRowByIndex(p.id);
-        this.props.closeDialog();
-    }
-
-    handleCancel() {
-        this.props.closeDialog();
-    }
-
-    render() {
-        return (
-            <Dialog
-                disableBackdropClick
-                disableEscapeKeyDown
-                open={this.props.open}
-                {...this.props}
-            >
-                <DialogTitle>Cancellare l'articolo?</DialogTitle>
-                <DialogContent>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => this.handleCancel(this.props)} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={() => this.handleOk(this.props)} color="primary">
-                        Ok
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        );
-    }
-}
+import SuperCalcComponent from './common/SuperCalcComponent';
+import SuperCalcRowDefinition from '../BackEnd/SuperCalcRowDefinition';
+import ActionConfirmDialog from './ActionConfirmDialog';
 
 class InputGrid extends SuperCalcComponent {
     state = {
-        open: false,
-        idToDelete: null,
-        saving: false
+        deleteConfirmDialogTitle: "",
+        deleteConfirmDialogOpen: false,
+        idToDelete: null
     };
+
+    closeDeleteItemDialog() {
+        this.setState({ ...this.state, deleteConfirmDialogOpen: false })
+    }
+
+    doDeleteItemCallback(id) {
+        this.SuperCalcStatus.deleteRowByIndex(id);
+        this.closeDeleteItemDialog();
+    }
+
+    cancelDeleteItemCallback() {
+        this.closeDeleteItemDialog();
+    }
 
     getItemFieldValue(item, field_name) {
         if (item) {
@@ -106,7 +76,18 @@ class InputGrid extends SuperCalcComponent {
                     </Grid>
                 </ExpansionPanelDetails>
                 <ExpansionPanelActions>
-                    <Button color="default" onClick={() => { this.setState({ ...this.state, open: true, idToDelete: row_index }) }}>DELETE</Button>
+                    <Button color="default" onClick={
+                        () => {
+                            this.setState(
+                                {
+                                    ...this.state,
+                                    deleteConfirmDialogOpen: true,
+                                    idToDelete: row_index,
+                                    deleteConfirmDialogTitle: "Cancellare l'articolo " + item.item_name + "?"
+                                }
+                            )
+                        }
+                    }>DELETE</Button>
                 </ExpansionPanelActions>
             </ExpansionPanel>
         );
@@ -115,26 +96,33 @@ class InputGrid extends SuperCalcComponent {
     renderInputList() {
         // Get the list of items
         const items_list = this.SuperCalcStatus.getItems();
-
+        // Build the list of rendered items made of the exsisting items plus the "blank" one; 
+        // Each item of this list is a rendered element
+        // Start with an empty list
+        let rendered_items = []
+        // Add the blank item first
+        rendered_items.push(
+            this.renderItemInputPanel({}, items_list.length)
+        );
+        // Add the exsisting items
+        rendered_items = rendered_items.concat(
+            items_list.map(
+                (item, index) => {
+                    return this.renderItemInputPanel(item, index)
+                }
+            )
+        )
         return (
             <div>
-                <Typography>{this.state.saving ? "SAVING" : "OK"}</Typography>
-                <DeleteConfirmDialog
-                    open={this.state.open}
+                <ActionConfirmDialog
+                    dialogtitle={this.state.deleteConfirmDialogTitle}
+                    open={this.state.deleteConfirmDialogOpen}
                     id={this.state.idToDelete}
-                    closeDialog={() => { this.setState({ ...this.state, open: false }) }}
+                    okcallback={() => { this.doDeleteItemCallback(this.state.idToDelete) }}
+                    cancelcallback={() => { this.cancelDeleteItemCallback() }}
                 >
-                </DeleteConfirmDialog>
-                { // Items in list
-                    items_list.map(
-                        (item, index) => {
-                            return this.renderItemInputPanel(item, index)
-                        }
-                    ).concat( // New item
-                        [this.renderItemInputPanel({}, items_list.length)]
-                    )
-
-                }
+                </ActionConfirmDialog>
+                {rendered_items}
             </div>
         )
     }

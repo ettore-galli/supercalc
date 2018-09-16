@@ -12,7 +12,8 @@ class Rational {
 
     static parse(f, defaultValue) {
         defaultValue = defaultValue || Rational.__NAN;
-        if (isNaN(f) || (f === "") || (f === null)) {
+        //if (isNaN(f) || (f === "") || (f === null)) {
+        if ((f === "") || (f === null)) {
             return defaultValue;
         }
         const fs = String(f).replace(",", ".");

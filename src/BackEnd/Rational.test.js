@@ -4,6 +4,10 @@ it('parses a number', () => {
   let ra = Rational.parse("3.1415");
   expect(ra).toEqual([3141500000, 1000000000])
 });
+it('parses a number ,', () => {
+  let ra = Rational.parse("3,1415");
+  expect(ra).toEqual([3141500000, 1000000000])
+});
 
 it('parses a not-a-number (blank)', () => {
   let ra = Rational.parse("");

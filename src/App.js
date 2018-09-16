@@ -11,7 +11,7 @@ import green from '@material-ui/core/colors/green';
 import SuperCalcComponent from './components/common/SuperCalcComponent';
 import InputGrid from './components/InputGrid';
 import TotalsGrid from './components/TotalsGrid';
-import ControlButtons from './components/ControlButtons';
+// import ControlButtons from './components/ControlButtons';
 import CustomAppBar from './components/CustomAppBar';
 
 class App extends SuperCalcComponent {
@@ -23,7 +23,7 @@ class App extends SuperCalcComponent {
         // Load initial state from persistence
         __this.SuperCalcStatus.setInitialStateWithNoForceUpdate(appState);
         // Override title
-        __this.SuperCalcStatus.setTitle("Super! Calculator!");
+        __this.SuperCalcStatus.setTitle("Super Calculator");
       }
     )
   }
@@ -40,7 +40,7 @@ class App extends SuperCalcComponent {
         <div>
           <CustomAppBar autoupdate={true} variant="headline">
           </CustomAppBar>
-          <ControlButtons></ControlButtons>
+          {/* <ControlButtons></ControlButtons> */}
           <TotalsGrid autoupdate={true}></TotalsGrid>
           <InputGrid autoupdate={true}></InputGrid>
         </div>
