@@ -11,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import SuperCalcComponent from './common/SuperCalcComponent';
 import SuperCalcRowDefinition from '../BackEnd/SuperCalcRowDefinition';
 import ActionConfirmDialog from './ActionConfirmDialog';
+import SuperCalcEngine from '../BackEnd/SuperCalcEngine';
 
 class InputGrid extends SuperCalcComponent {
     state = {
@@ -42,8 +43,18 @@ class InputGrid extends SuperCalcComponent {
     }
 
     getItemSummary(item) {
-        return this.getItemFieldValue(item, "item_name");
+
+        if (item && (item.item_name || item.quantity || item.unit_price)) {
+            let total_price = SuperCalcEngine.getFloatTotalPrice(item);
+            let total_price_summary = String(total_price) || "";
+            return (item.item_name || "") + " " + total_price_summary;
+        } else {
+            return "Nuovo..."
+        }
+
     }
+
+
 
     renderItemInputPanel(item, row_index) {
         // Columns list 

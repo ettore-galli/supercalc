@@ -29,7 +29,7 @@ class ClearListButton extends SuperCalcComponent {
     render() {
         return (
             <span>
-                <IconButton>
+                <IconButton color="primary">
                     <ClearAll
                         onClick={(event) => {
                             this.setState(
