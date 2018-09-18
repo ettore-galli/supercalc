@@ -12,6 +12,7 @@ import SuperCalcComponent from './common/SuperCalcComponent';
 import SuperCalcRowDefinition from '../BackEnd/SuperCalcRowDefinition';
 import ActionConfirmDialog from './ActionConfirmDialog';
 import SuperCalcEngine from '../BackEnd/SuperCalcEngine';
+import GridInputField from './common/GridInputField';
 
 class InputGrid extends SuperCalcComponent {
     state = {
@@ -59,7 +60,6 @@ class InputGrid extends SuperCalcComponent {
     renderItemInputPanel(item, row_index) {
         // Columns list 
         const loadInputFields = SuperCalcRowDefinition.inputFields;
-
         return (
             <ExpansionPanel key={row_index}>
                 <ExpansionPanelSummary>{this.getItemSummary(item)}</ExpansionPanelSummary>
@@ -70,7 +70,8 @@ class InputGrid extends SuperCalcComponent {
                                 <Grid
                                     key={column_index}
                                     item xs={12}>
-                                    <TextField
+                                    <GridInputField
+                                        rowId = {row_index}
                                         label={column.field_name}
                                         onChange={(event) => {
                                             this.SuperCalcStatus.setRowFieldValue(
@@ -79,8 +80,9 @@ class InputGrid extends SuperCalcComponent {
                                                 event.target.value)
                                         }}
                                         name={column.field_name}
-                                        value={this.getItemFieldValue(item, column.field_name)}>
-                                    </TextField>
+                                        value={this.getItemFieldValue(item, column.field_name)}
+                                    >
+                                    </GridInputField>
                                 </Grid>
                             );
                         })}

@@ -10,7 +10,6 @@ import SuperCalcComponent from './common/SuperCalcComponent';
 import SaveButton from './SaveButton';
 import ClearListButton from './ClearListButton';
 
-
 class CustomAppBar extends SuperCalcComponent {
     render() {
 
