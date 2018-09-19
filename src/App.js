@@ -9,10 +9,13 @@ import green from '@material-ui/core/colors/green';
 
 // Own component import
 import SuperCalcComponent from './components/common/SuperCalcComponent';
+import SuperCalcEngine from './BackEnd/SuperCalcEngine';
+
 import InputGrid from './components/InputGrid';
 import TotalsGrid from './components/TotalsGrid';
 // import ControlButtons from './components/ControlButtons';
 import CustomAppBar from './components/CustomAppBar';
+import Rational from './BackEnd/Rational';
 
 class App extends SuperCalcComponent {
 
@@ -29,20 +32,35 @@ class App extends SuperCalcComponent {
   }
 
   render() {
+    // Theme
     const theme = createMuiTheme({
       palette: {
         primary: green,
       },
     });
 
+
+    // Render
     return (
       <MuiThemeProvider theme={theme}>
         <div>
           <CustomAppBar autoupdate={true} variant="headline">
           </CustomAppBar>
-          {/* <ControlButtons></ControlButtons> */}
-          <TotalsGrid autoupdate={true}></TotalsGrid>
-          <InputGrid autoupdate={true}></InputGrid>
+          <TotalsGrid
+            autoupdate={true}
+            finalDestinationTotalsField={"final_destination_1_totals"}
+            title={"Totali per destinazione 1"}
+            showTableFooter={true}
+          ></TotalsGrid>
+          <TotalsGrid
+            autoupdate={true}
+            finalDestinationTotalsField={"final_destination_2_totals"}
+            title={"Totali per destinazione 2"}
+            showTableFooter={false}
+          ></TotalsGrid>
+          <InputGrid
+            autoupdate={true}
+          ></InputGrid>
         </div>
       </MuiThemeProvider>
     );

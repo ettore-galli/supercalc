@@ -11,7 +11,6 @@ class GridInputField extends SuperCalcComponent {
 
     renderButtonsList(fdtotals, rowId, fieldName) {
         if (fdtotals) {
-            console.log(fdtotals)
             return Object.keys(fdtotals).map(
                 (item) => {
                     return (
@@ -47,7 +46,7 @@ class GridInputField extends SuperCalcComponent {
         return (
             <span>
                 <TextField
-                    {...this.props}
+                    {...rest}
                 >
                     {this.props.children}
                 </TextField>
