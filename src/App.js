@@ -9,13 +9,11 @@ import green from '@material-ui/core/colors/green';
 
 // Own component import
 import SuperCalcComponent from './components/common/SuperCalcComponent';
-import SuperCalcEngine from './BackEnd/SuperCalcEngine';
-
 import InputGrid from './components/InputGrid';
 import TotalsGrid from './components/TotalsGrid';
-// import ControlButtons from './components/ControlButtons';
 import CustomAppBar from './components/CustomAppBar';
-import Rational from './BackEnd/Rational';
+import SuperCalcConstants from './BackEnd/SuperCalcConstants';
+
 
 class App extends SuperCalcComponent {
 
@@ -25,6 +23,9 @@ class App extends SuperCalcComponent {
       (appState) => {
         // Load initial state from persistence
         __this.SuperCalcStatus.setInitialStateWithNoForceUpdate(appState);
+        // Force initial update
+        __this.SuperCalcStatus.setSaving(SuperCalcConstants.__SAVING_STATUS_DONE);
+        __this.SuperCalcStatus.doForceUpdate();
       }
     )
   }

@@ -19,7 +19,7 @@ class CustomAppBar extends SuperCalcComponent {
                 {"LISTA DELLA SPESA"}
                 <SaveButton></SaveButton>
                 <ClearListButton></ClearListButton>
-                <Button
+                {/* <Button
                     onClick={
                         () => {
                             this.SuperCalcStatus.applicationState.list.items = this.SuperCalcStatus.applicationState.list.items.concat(
@@ -77,7 +77,7 @@ class CustomAppBar extends SuperCalcComponent {
                             this.SuperCalcStatus.doForceUpdate()
                         }
                     }
-                >testdata</Button>
+                >testdata</Button> */}
             </AppBar>
         );
     }
