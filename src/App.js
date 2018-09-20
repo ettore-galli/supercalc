@@ -25,8 +25,6 @@ class App extends SuperCalcComponent {
       (appState) => {
         // Load initial state from persistence
         __this.SuperCalcStatus.setInitialStateWithNoForceUpdate(appState);
-        // Override title
-        __this.SuperCalcStatus.setTitle("Super Calculator");
       }
     )
   }
@@ -48,15 +46,6 @@ class App extends SuperCalcComponent {
           </CustomAppBar>
           <TotalsGrid
             autoupdate={true}
-            finalDestinationTotalsField={"final_destination_1_totals"}
-            title={"Totali per destinazione 1"}
-            showTableFooter={true}
-          ></TotalsGrid>
-          <TotalsGrid
-            autoupdate={true}
-            finalDestinationTotalsField={"final_destination_2_totals"}
-            title={"Totali per destinazione 2"}
-            showTableFooter={false}
           ></TotalsGrid>
           <InputGrid
             autoupdate={true}

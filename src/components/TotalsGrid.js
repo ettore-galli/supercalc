@@ -1,35 +1,37 @@
 import React from 'react'
-import SuperCalcComponent from './common/SuperCalcComponent';
-import SuperCalcEngine from '../BackEnd/SuperCalcEngine';
+
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
-import Rational from '../BackEnd/Rational';
-
+import Typography from '@material-ui/core/Typography';
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-
 import { withStyles } from '@material-ui/core/styles';
 
-const tableCellCommonStyle = {
+import Rational from '../BackEnd/Rational';
+import SuperCalcComponent from './common/SuperCalcComponent';
+import SuperCalcEngine from '../BackEnd/SuperCalcEngine';
+
+const commonStyle = {
     fontSize: 18
 }
 
 const CustomTableCell = withStyles({
     root: {
-        ...tableCellCommonStyle
+        ...commonStyle
     },
     body: {
-        ...tableCellCommonStyle
+        ...commonStyle
     },
     footer: {
-        ...tableCellCommonStyle
+        ...commonStyle
     }
 })(TableCell);
+
 
 
 class TotalsGrid extends SuperCalcComponent {
@@ -77,27 +79,36 @@ class TotalsGrid extends SuperCalcComponent {
         )
     }
 
-    renderTotalsList(final_destination_totals_list, grand_total) {
-        const totals_list = final_destination_totals_list;
+    renderTotalsTable(totals_list, grand_total, showTableFooter) {
+        return (
+            <Table>
+                {this.renderTableHead()}
+                <TableBody>
+                    {this.renderTableBodyInside(totals_list)}
+                </TableBody>
+                {(() => {
+                    if (showTableFooter) {
+                        return this.renderTableFooter(totals_list, grand_total);
+                    } else {
+                        return null;
+                    }
+                })()}
+            </Table>
+        )
+    }
+
+    renderTotalsList(all_totals) {
+        const totals_list_1 = all_totals.final_destination_1_totals;
+        const totals_list_2 = all_totals.final_destination_2_totals;
+        const grand_total = Rational.float(all_totals.grand_total)
         return (
             <ExpansionPanel>
                 <ExpansionPanelSummary>
-                    {this.props.title}
+                    <Typography variant="display3">{"TOTALE" + ": " + grand_total}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <Table>
-                        {this.renderTableHead()}
-                        <TableBody>
-                            {this.renderTableBodyInside(totals_list)}
-                        </TableBody>
-                        {(() => {
-                            if (this.props.showTableFooter) {
-                                return this.renderTableFooter(totals_list, grand_total);
-                            } else {
-                                return null;
-                            }
-                        })()}
-                    </Table>
+                    {this.renderTotalsTable(totals_list_1, grand_total, true)}
+                    {this.renderTotalsTable(totals_list_2, grand_total, false)}
                 </ExpansionPanelDetails>
             </ExpansionPanel>
         )
@@ -108,12 +119,7 @@ class TotalsGrid extends SuperCalcComponent {
         const items_list = this.SuperCalcStatus.getItems();
         const all_totals = SuperCalcEngine.listFullProcessing(items_list);
         // Render
-        return this.renderTotalsList(
-            // all_totals.final_destination_1_totals,
-            all_totals[this.props.finalDestinationTotalsField],
-            Rational.float(all_totals.grand_total)
-        )
-
+        return this.renderTotalsList(all_totals)
     }
 }
 

@@ -16,7 +16,7 @@ class CustomAppBar extends SuperCalcComponent {
         return (
             <AppBar variant={this.props.variant}>
                 {this.props.children}
-                {this.SuperCalcStatus.getTitle()}
+                {"LISTA DELLA SPESA"}
                 <SaveButton></SaveButton>
                 <ClearListButton></ClearListButton>
                 <Button

@@ -56,13 +56,31 @@ class InputGrid extends SuperCalcComponent {
     }
 
 
+    getItemStyle(item) {
+        let style = {
+            background: ''
+        };
+        const total = SuperCalcEngine.getFloatTotalPrice(item);
+        // Nuovo
+        if ((item.item_name === undefined) && (total == 0)) {
+            style.background = "GreenYellow"
+        }
+        // Senza prezzo
+        if ((item.item_name !== undefined) && (total == 0)) {
+            style.background = "Salmon"
+        }
+        return style;
+    }
 
     renderItemInputPanel(item, row_index) {
         // Columns list 
         const loadInputFields = SuperCalcRowDefinition.inputFields;
         return (
             <ExpansionPanel key={row_index}>
-                <ExpansionPanelSummary>{this.getItemSummary(item)}</ExpansionPanelSummary>
+                <ExpansionPanelSummary
+                    style={this.getItemStyle(item)}
+                >{this.getItemSummary(item)}
+                </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Grid container>
                         {loadInputFields.map((column, column_index) => {
@@ -71,7 +89,7 @@ class InputGrid extends SuperCalcComponent {
                                     key={column_index}
                                     item xs={12}>
                                     <GridInputField
-                                        rowId = {row_index}
+                                        rowId={row_index}
                                         label={column.field_name}
                                         onChange={(event) => {
                                             this.SuperCalcStatus.setRowFieldValue(
