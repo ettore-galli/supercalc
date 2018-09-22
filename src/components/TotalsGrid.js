@@ -11,6 +11,7 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import { withStyles } from '@material-ui/core/styles';
+import Grid from "@material-ui/core/Grid";
 
 import Rational from '../BackEnd/Rational';
 import SuperCalcComponent from './common/SuperCalcComponent';
@@ -36,11 +37,11 @@ const CustomTableCell = withStyles({
 
 class TotalsGrid extends SuperCalcComponent {
 
-    renderTableHead() {
+    renderTableHead(titolo) {
         return (
             <TableHead>
                 <TableRow>
-                    <CustomTableCell>Destinazione</CustomTableCell>
+                    <CustomTableCell>{titolo}</CustomTableCell>
                     <CustomTableCell numeric>Totale</CustomTableCell>
                 </TableRow>
             </TableHead>
@@ -54,7 +55,7 @@ class TotalsGrid extends SuperCalcComponent {
                     return (
                         <TableRow key={id}>
                             <CustomTableCell>
-                                {entry}
+                                {(entry!=="" && entry !==null)?entry:"(Non specificata)"}
                             </CustomTableCell>
                             <CustomTableCell numeric>
                                 {Rational.float(totals_list[entry])}
@@ -79,22 +80,37 @@ class TotalsGrid extends SuperCalcComponent {
         )
     }
 
-    renderTotalsTable(totals_list, grand_total, showTableFooter) {
-        return (
-            <Table>
-                {this.renderTableHead()}
-                <TableBody>
-                    {this.renderTableBodyInside(totals_list)}
-                </TableBody>
-                {(() => {
-                    if (showTableFooter) {
-                        return this.renderTableFooter(totals_list, grand_total);
-                    } else {
-                        return null;
-                    }
-                })()}
-            </Table>
-        )
+    showTotalstableIsLegit(totals_list) {
+        let entries = Object.keys(totals_list);
+        if (entries.length == 0) {
+            return false;
+        } else if (entries.length === 1 && entries[0] === "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    renderTotalsTable(totals_list, grand_total, showTableFooter, titolo) {
+        if (this.showTotalstableIsLegit(totals_list)) {
+            return (
+                <Table>
+                    {this.renderTableHead(titolo)}
+                    <TableBody>
+                        {this.renderTableBodyInside(totals_list)}
+                    </TableBody>
+                    {(() => {
+                        if (showTableFooter) {
+                            return this.renderTableFooter(totals_list, grand_total);
+                        } else {
+                            return null;
+                        }
+                    })()}
+                </Table>
+            )
+        } else {
+            return "";
+        }
     }
 
     renderTotalsList(all_totals) {
@@ -104,11 +120,17 @@ class TotalsGrid extends SuperCalcComponent {
         return (
             <ExpansionPanel>
                 <ExpansionPanelSummary>
-                    <Typography variant="display3">{"TOTALE" + ": " + grand_total}</Typography>
+                    <Typography variant="display2">{"TOTALE" + ": " + grand_total}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    {this.renderTotalsTable(totals_list_1, grand_total, true)}
-                    {this.renderTotalsTable(totals_list_2, grand_total, false)}
+                    <Grid container>
+                        <Grid item xs={12}>
+                            {this.renderTotalsTable(totals_list_1, grand_total, false, "Destinazione 1")}
+                        </Grid>
+                        <Grid item xs={12}>
+                            {this.renderTotalsTable(totals_list_2, grand_total, false, "Destinazione 2")}
+                        </Grid>
+                    </Grid>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
         )
