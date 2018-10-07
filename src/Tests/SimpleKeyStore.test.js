@@ -1,6 +1,4 @@
-import SimpleKeyStore from './SimpleKeyStore';
-
- 
+import SimpleKeyStore from '../BackEnd/SimpleKeyStore';
 
 it('indexedDB is available', () => {
   // console.log(global.localstorage)

@@ -6,14 +6,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Dialog from '@material-ui/core/Dialog';
 
-import SuperCalcComponent from './common/SuperCalcComponent';
 
-class ActionConfirmDialog extends SuperCalcComponent {
+class ActionConfirmDialog extends React.Component {
 
     render() {
 
-        const {dialogtitle, okcallback, cancelcallback, ...rest } = this.props
-        
+        const { dialogtitle, okcallback, cancelcallback, ...rest } = this.props
+
         return (
             <Dialog
                 disableBackdropClick
@@ -25,7 +24,7 @@ class ActionConfirmDialog extends SuperCalcComponent {
                 <DialogContent>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={cancelcallback} color="primary"> 
+                    <Button onClick={cancelcallback} color="primary">
                         Cancel
                     </Button>
                     <Button onClick={okcallback} color="primary">

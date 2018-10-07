@@ -12,6 +12,10 @@ class SuperCalcEngine {
         }
     }
 
+    static parseFinalDestination(fd) {
+        return SuperCalcEngine.__parseFinalDestination(fd);
+    }
+
     static __getPreprocessedRow(row) {
         return {
             ...row,
@@ -60,6 +64,17 @@ class SuperCalcEngine {
         )
     }
 
+    static findFinalDestinationIndex(final_destination, final_destination_totals) {
+        let fdlist = Object.keys(final_destination_totals)
+        for (let i = 0; i < fdlist.length; i++) {
+            let fd = fdlist[i];
+            if (this.__parseFinalDestination(final_destination) === fd) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     static __getGrandTotal = function (list) {
         return list.reduce(
             function (total, item) {
@@ -71,13 +86,15 @@ class SuperCalcEngine {
 
     static listFullProcessing(list) {
         const calclist = list.map(SuperCalcEngine.getRowWithTotalPrice);
+        let grand_total = SuperCalcEngine.__getGrandTotal(calclist);
+        let grand_total_float = Rational.float(grand_total);
         return {
             final_destination_1_totals: SuperCalcEngine.__getFinalDestinationsSubtotals(calclist, "final_destination_1"),
             final_destination_2_totals: SuperCalcEngine.__getFinalDestinationsSubtotals(calclist, "final_destination_2"),
-            grand_total: SuperCalcEngine.__getGrandTotal(calclist)
+            grand_total: grand_total,
+            grand_total_float: grand_total_float
         }
     }
-
 
 } // End class
 

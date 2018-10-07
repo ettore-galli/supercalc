@@ -14,8 +14,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 
 import Rational from '../BackEnd/Rational';
-import SuperCalcComponent from './common/SuperCalcComponent';
-import SuperCalcEngine from '../BackEnd/SuperCalcEngine';
+import superCalcStateManager from '../BackEnd/SuperCalcStateManager';
+import SuperCalcFrontEndEngine from '../BackEnd/SuperCalcFrontEndEngine';
 
 const commonStyle = {
     fontSize: 18
@@ -33,9 +33,13 @@ const CustomTableCell = withStyles({
     }
 })(TableCell);
 
+class TotalsGrid extends React.Component {
 
-
-class TotalsGrid extends SuperCalcComponent {
+    componentDidMount() {
+        if (this.props.autoupdate || false) {
+            superCalcStateManager.addForceUpdateComponent(this);
+        }
+    }
 
     renderTableHead(titolo) {
         return (
@@ -52,12 +56,16 @@ class TotalsGrid extends SuperCalcComponent {
         return (
             Object.keys(totals_list).map(
                 (entry, id) => {
+                    let color = SuperCalcFrontEndEngine.finalDestinationColorFromIndex(id);
+                    let style = {
+                        background: color
+                    }
                     return (
                         <TableRow key={id}>
-                            <CustomTableCell>
-                                {(entry!=="" && entry !==null)?entry:"(Non specificata)"}
+                            <CustomTableCell style={style}>
+                                {(entry !== "" && entry !== null) ? entry : "(Non specificata)"}
                             </CustomTableCell>
-                            <CustomTableCell numeric>
+                            <CustomTableCell numeric style={style}>
                                 {Rational.float(totals_list[entry])}
                             </CustomTableCell>
                         </TableRow>
@@ -82,7 +90,7 @@ class TotalsGrid extends SuperCalcComponent {
 
     showTotalstableIsLegit(totals_list) {
         let entries = Object.keys(totals_list);
-        if (entries.length == 0) {
+        if (entries.length === 0) {
             return false;
         } else if (entries.length === 1 && entries[0] === "") {
             return false;
@@ -116,11 +124,11 @@ class TotalsGrid extends SuperCalcComponent {
     renderTotalsList(all_totals) {
         const totals_list_1 = all_totals.final_destination_1_totals;
         const totals_list_2 = all_totals.final_destination_2_totals;
-        const grand_total = Rational.float(all_totals.grand_total)
+        const grand_total = all_totals.grand_total_float;
         return (
             <ExpansionPanel>
                 <ExpansionPanelSummary>
-                    <Typography variant="display2">{"TOTALE" + ": " + grand_total}</Typography>
+                    <Typography variant="display1">{"TOTALE: " + grand_total}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Grid container>
@@ -138,8 +146,7 @@ class TotalsGrid extends SuperCalcComponent {
 
     render() {
         // Calculate Totals
-        const items_list = this.SuperCalcStatus.getItems();
-        const all_totals = SuperCalcEngine.listFullProcessing(items_list);
+        const all_totals = superCalcStateManager.getAllTotals();
         // Render
         return this.renderTotalsList(all_totals)
     }

@@ -3,18 +3,25 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import SaveIcon from '@material-ui/icons/Save';
 
-
-import SuperCalcComponent from './common/SuperCalcComponent';
 import SuperCalcConstants from '../BackEnd/SuperCalcConstants';
+import superCalcStateManager from '../BackEnd/SuperCalcStateManager';
+import superCalcStatePersistence from '../BackEnd/SuperCalcStatePersistence';
 
-class SaveButton extends SuperCalcComponent {
+
+class SaveButton extends React.Component {
+
+    componentDidMount() {
+        if (this.props.autoupdate || false) {
+            superCalcStateManager.addForceUpdateComponent(this);
+        }
+    }
 
     saveIconColor() {
-        if (this.SuperCalcStatus.getSaving() === SuperCalcConstants.__SAVING_STATUS_NEEDED) {
+        if (superCalcStateManager.getSaving() === SuperCalcConstants.__SAVING_STATUS_NEEDED) {
             return "secondary";
-        } else if (this.SuperCalcStatus.getSaving() === SuperCalcConstants.__SAVING_STATUS_PROGRESS) {
+        } else if (superCalcStateManager.getSaving() === SuperCalcConstants.__SAVING_STATUS_PROGRESS) {
             return "secondary"
-        } else if (this.SuperCalcStatus.getSaving() === SuperCalcConstants.__SAVING_STATUS_DONE) {
+        } else if (superCalcStateManager.getSaving() === SuperCalcConstants.__SAVING_STATUS_DONE) {
             return "primary";
         } else {
             return "primary";
@@ -27,10 +34,10 @@ class SaveButton extends SuperCalcComponent {
                 <SaveIcon
                     onClick={(event) => {
                         var __this = this;
-                        this.SuperCalcStatus.setSaving(SuperCalcConstants.__SAVING_STATUS_PROGRESS);
-                        this.superCalcStatePersistence.set(this.SuperCalcStatus.getStatus()).then(
+                        superCalcStateManager.setSaving(SuperCalcConstants.__SAVING_STATUS_PROGRESS);
+                        superCalcStatePersistence.set(superCalcStateManager.getStatus()).then(
                             () => {
-                                __this.SuperCalcStatus.setSaving(SuperCalcConstants.__SAVING_STATUS_DONE);
+                                superCalcStateManager.setSaving(SuperCalcConstants.__SAVING_STATUS_DONE);
                             }
                         )
                     }}

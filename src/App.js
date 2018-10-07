@@ -8,24 +8,25 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import green from '@material-ui/core/colors/green';
 
 // Own component import
-import SuperCalcComponent from './components/common/SuperCalcComponent';
-import InputGrid from './components/InputGrid';
+import superCalcStateManager from './BackEnd/SuperCalcStateManager';
+import superCalcStatePersistence from './BackEnd/SuperCalcStatePersistence';
+
 import TotalsGrid from './components/TotalsGrid';
+import ItemsGrid from './components/ItemsGrid';
+
 import CustomAppBar from './components/CustomAppBar';
 import SuperCalcConstants from './BackEnd/SuperCalcConstants';
 
-
-class App extends SuperCalcComponent {
+class App extends React.Component {
 
   componentDidMount() {
-    let __this = this;
-    this.superCalcStatePersistence.get().then(
+    superCalcStatePersistence.get().then(
       (appState) => {
         // Load initial state from persistence
-        __this.SuperCalcStatus.setInitialStateWithNoForceUpdate(appState);
+        superCalcStateManager.setInitialStateWithNoForceUpdate(appState);
         // Force initial update
-        __this.SuperCalcStatus.setSaving(SuperCalcConstants.__SAVING_STATUS_DONE);
-        __this.SuperCalcStatus.doForceUpdate();
+        superCalcStateManager.setSaving(SuperCalcConstants.__SAVING_STATUS_DONE);
+        superCalcStateManager.doForceUpdate();
       }
     )
   }
@@ -48,9 +49,9 @@ class App extends SuperCalcComponent {
           <TotalsGrid
             autoupdate={true}
           ></TotalsGrid>
-          <InputGrid
+          <ItemsGrid
             autoupdate={true}
-          ></InputGrid>
+          ></ItemsGrid>
         </div>
       </MuiThemeProvider>
     );

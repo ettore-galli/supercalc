@@ -3,26 +3,25 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-import SuperCalcComponent from './SuperCalcComponent';
-import SuperCalcEngine from '../../BackEnd/SuperCalcEngine';
+import BaseComponent from './BaseComponent';
+import superCalcStateManager from '../../BackEnd/SuperCalcStateManager';
 
-class GridInputField extends SuperCalcComponent {
+class InputDialogField extends BaseComponent {
 
-
-    renderButtonsList(fdtotals, rowId, fieldName) {
+    renderButtonsList(fdtotals, field_name, finalDestinationCallback) {
         if (fdtotals) {
             return Object.keys(fdtotals).map(
-                (item) => {
+                (value) => {
                     return (
                         <Button
-                            key={item}
-                            value={item}
+                            key={value}
+                            value={value}
                             onClick={
                                 (event) => {
-                                    this.SuperCalcStatus.setRowFieldValue(rowId, fieldName, item)
+                                    finalDestinationCallback(field_name, value)
                                 }
                             }
-                        >{item}
+                        >{value}
                         </Button>
                     )
                 }
@@ -31,17 +30,17 @@ class GridInputField extends SuperCalcComponent {
     }
 
     render() {
-        const { rowId, ...rest } = this.props;
+
+        const { rowId, finalDestinationCallback, ...rest } = this.props;
         var fdlist = null;
 
-        // Final destination buttons
+        // Final destination buttons construction
         if (String(this.props.name).startsWith("final_destination")) {
-            // Calculate Totals
-            const items_list = this.SuperCalcStatus.getItems();
-            const all_totals = SuperCalcEngine.listFullProcessing(items_list);
-            // Prepare buttons list
-            fdlist = this.renderButtonsList(all_totals[this.props.name + "_totals"], rowId, this.props.name);
+            const all_totals = superCalcStateManager.getAllTotals();
+            const total_fields_name = this.props.name + "_totals";
+            fdlist = this.renderButtonsList(all_totals[total_fields_name], this.props.name, finalDestinationCallback);
         }
+
         // Input renderer
         return (
             <span>
@@ -57,4 +56,4 @@ class GridInputField extends SuperCalcComponent {
     }
 }
 
-export default GridInputField;
+export default InputDialogField;

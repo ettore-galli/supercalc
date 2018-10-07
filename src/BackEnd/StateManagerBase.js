@@ -10,9 +10,10 @@ class StateManagerBase {
      * Forces the update of all registered components
      */
     __doForceUpdate() {
-        this.forceUpdateComponents.forEach(element => {
+        this.forceUpdateComponents.forEach(async element => {
             if (element.forceUpdate) {
-                element.setState({ ...element.state, update: true })
+                //element.setState({ ...element.state, update: true })
+                element.setState({...this.applicationState})
             }
         });
     }

@@ -1,5 +1,6 @@
 import StateManagerBase from './StateManagerBase';
 import SuperCalcConstants from './SuperCalcConstants';
+import SuperCalcEngine from '../BackEnd/SuperCalcEngine';
 
 class SuperCalcStateManager extends StateManagerBase {
 
@@ -22,6 +23,7 @@ class SuperCalcStateManager extends StateManagerBase {
     constructor() {
         super()
         this.applicationState = { ...SuperCalcStateManager.__BLANK_STATUS };
+        this.applicationState.all_totals = SuperCalcEngine.listFullProcessing(this.applicationState.list.items);
     }
 
 
@@ -29,7 +31,20 @@ class SuperCalcStateManager extends StateManagerBase {
     __setStateWorkflow(stateUpdatecallback) {
         this.setSavingNoForceUpdate(SuperCalcConstants.__SAVING_STATUS_NEEDED);
         stateUpdatecallback(this.applicationState) // stateUpdatecallback(appState)
+        this.applicationState.all_totals = SuperCalcEngine.listFullProcessing(this.applicationState.list.items);
         this.__doForceUpdate();
+
+        // await (
+        //     new Promise(
+        //         (resolve, reject) => {
+        //             this.setSavingNoForceUpdate(SuperCalcConstants.__SAVING_STATUS_NEEDED);
+        //             stateUpdatecallback(this.applicationState) // stateUpdatecallback(appState)
+        //             this.__doForceUpdate();
+        //             resolve(true);
+        //         }
+        //     )
+        // )
+
     }
 
     setInitialStateWithNoForceUpdate(wholeAppState) {
@@ -90,7 +105,27 @@ class SuperCalcStateManager extends StateManagerBase {
     setRowFieldValue(rowId, fieldName, fieldValue) {
         return this.__setStateWorkflow(
             (appState) => {
-                return this.setRowFieldValueCallback(appState, rowId, fieldName, fieldValue)
+                return this.setRowFieldValueCallback(appState, rowId, fieldName, fieldValue);
+            }
+        )
+    }
+
+    setRowCallback(appState, rowId, row) {
+        try {
+            if (rowId === undefined || rowId === null) {
+                rowId = appState.list.items.length;
+            }
+            appState.list.items[rowId] = row
+        } catch (e) {
+            console.log(e)
+        }
+        return appState
+    }
+
+    setRow(rowId, row) {
+        return this.__setStateWorkflow(
+            (appState) => {
+                return this.setRowCallback(appState, rowId, row);
             }
         )
     }
@@ -130,6 +165,14 @@ class SuperCalcStateManager extends StateManagerBase {
 
     getItems() {
         return this.applicationState.list.items.concat();
+    }
+
+    getRow(rowId) {
+        return this.applicationState.list.items[rowId] || {};
+    }
+
+    getAllTotals() {
+        return this.applicationState.all_totals;
     }
 
     getSaving() {

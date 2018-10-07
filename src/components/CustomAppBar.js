@@ -5,19 +5,23 @@ import React from 'react';
 import AppBar from '@material-ui/core/Typography'
 
 // Own component import
-import SuperCalcComponent from './common/SuperCalcComponent';
 import SaveButton from './SaveButton';
 import ClearListButton from './ClearListButton';
+import NewItemButton from './NewItemButton';
 
-class CustomAppBar extends SuperCalcComponent {
+class CustomAppBar extends React.Component {
     render() {
 
         return (
             <AppBar variant={this.props.variant}>
                 {this.props.children}
-                {"LISTA DELLA SPESA"}
-                <SaveButton></SaveButton>
-                <ClearListButton></ClearListButton>
+                {"LISTA"}
+                <SaveButton
+                    autoupdate={true}
+                ></SaveButton>
+                <ClearListButton
+                    autoupdate={true}
+                ></ClearListButton>
             </AppBar>
         );
     }
