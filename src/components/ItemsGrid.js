@@ -19,48 +19,11 @@ import NewItemButton from './NewItemButton';
 import superCalcStateManager from '../BackEnd/SuperCalcStateManager';
 
 class ItemsGrid extends React.Component {
-    state = {
-        deleteConfirmDialogTitle: "",
-        deleteConfirmDialogOpen: false,
-        idToDelete: null,
-        editConfirmDialogTitle: "",
-        editConfirmDialogOpen: false,
-        idToEdit: null
-    };
 
     componentDidMount() {
         if (this.props.autoupdate || false) {
             superCalcStateManager.addForceUpdateComponent(this);
         }
-    }
-
-    openDeleteItemDialog() {
-        this.setState({ ...this.state, deleteConfirmDialogOpen: true })
-    }
-
-    closeDeleteItemDialog() {
-        this.setState({ ...this.state, deleteConfirmDialogOpen: false })
-    }
-
-    openEditItemDialog() {
-        this.setState({ ...this.state, editConfirmDialogOpen: true })
-    }
-
-    closeEditItemDialog() {
-        this.setState({ ...this.state, editConfirmDialogOpen: false })
-    }
-
-    doDeleteItemCallback(id) {
-        superCalcStateManager.deleteRowByIndex(id);
-        this.closeDeleteItemDialog();
-    }
-
-    cancelDeleteItemCallback() {
-        this.closeDeleteItemDialog();
-    }
-
-    doEditItemCallback(id) {
-        this.closeEditItemDialog();
     }
 
     getItemFieldValue(item, field_name) {
@@ -148,6 +111,7 @@ class ItemsGrid extends React.Component {
                 </TableCell>
                 <TableCell>
                     <NewItemButton
+                        autoupdate={true}
                         innerStyle={{ marginLeft: 'auto' }}
                     ></NewItemButton>
                 </TableCell>
@@ -164,22 +128,12 @@ class ItemsGrid extends React.Component {
         )
         let new_item_row = this.renderNewItemRow();
         return (
-            <div>
-                <ActionConfirmDialog
-                    dialogtitle={this.state.deleteConfirmDialogTitle}
-                    open={this.state.deleteConfirmDialogOpen}
-                    id={this.state.idToDelete}
-                    okcallback={() => { this.doDeleteItemCallback(this.state.idToDelete) }}
-                    cancelcallback={() => { this.cancelDeleteItemCallback() }}
-                >
-                </ActionConfirmDialog>
-                <Table>
-                    <TableBody>
-                        {new_item_row}
-                        {rendered_items}
-                    </TableBody>
-                </Table>
-            </div>
+            <Table>
+                <TableBody>
+                    {new_item_row}
+                    {rendered_items}
+                </TableBody>
+            </Table>
         )
     }
 

@@ -8,7 +8,7 @@ import InputDialog from './InputDialog';
 
 class NewItemButton extends React.Component {
     state = {
-        newItemConfirmDialogOpen: false
+        newItemDialogOpen: false
     };
 
     componentDidMount() {
@@ -18,11 +18,11 @@ class NewItemButton extends React.Component {
     }
 
     openInputDialog() {
-        this.setState({ ...this.state, newItemConfirmDialogOpen: true })
+        this.setState({ ...this.state, newItemDialogOpen: true })
     }
 
     closeInputDialog() {
-        this.setState({ ...this.state, newItemConfirmDialogOpen: false })
+        this.setState({ ...this.state, newItemDialogOpen: false })
     }
 
     doSaveCallback() {
@@ -46,7 +46,7 @@ class NewItemButton extends React.Component {
                 <InputDialog
                     rowId={null}
                     dialogtitle={this.state.newItemConfirmDialogTitle}
-                    open={this.state.newItemConfirmDialogOpen || false}
+                    open={this.state.newItemDialogOpen || false}
                     okcallback={() => { this.doSaveCallback() }}
                     cancelcallback={() => { this.cancelEditCallback() }}
                 >

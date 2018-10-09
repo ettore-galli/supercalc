@@ -10,8 +10,7 @@ import InputDialog from './InputDialog';
 class EditItemButton extends React.Component {
     state = {
         editItemDialogTitle: "Modifica articolo",
-        editItemConfirmDialogOpen: false,
-        editRow: null
+        editItemConfirmDialogOpen: false
     };
 
     componentDidMount() {
@@ -47,6 +46,7 @@ class EditItemButton extends React.Component {
     }
 
     render() {
+        console.log(this.props.rowId, this.props.row)
         return (
             <span>
                 <IconButton color="primary" style={this.props.innerStyle}>

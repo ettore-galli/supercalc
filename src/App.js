@@ -44,7 +44,9 @@ class App extends React.Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-          <CustomAppBar autoupdate={true} variant="headline">
+          <CustomAppBar
+            autoupdate={true}
+            variant="headline">
           </CustomAppBar>
           <TotalsGrid
             autoupdate={true}

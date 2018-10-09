@@ -13,7 +13,7 @@ class StateManagerBase {
         this.forceUpdateComponents.forEach(async element => {
             if (element.forceUpdate) {
                 //element.setState({ ...element.state, update: true })
-                element.setState({...this.applicationState})
+                element.setState({...element.state, ...this.applicationState, toggle: !element.toggle || true})
             }
         });
     }

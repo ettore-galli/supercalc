@@ -26,25 +26,11 @@ class SuperCalcStateManager extends StateManagerBase {
         this.applicationState.all_totals = SuperCalcEngine.listFullProcessing(this.applicationState.list.items);
     }
 
-
-
     __setStateWorkflow(stateUpdatecallback) {
         this.setSavingNoForceUpdate(SuperCalcConstants.__SAVING_STATUS_NEEDED);
         stateUpdatecallback(this.applicationState) // stateUpdatecallback(appState)
         this.applicationState.all_totals = SuperCalcEngine.listFullProcessing(this.applicationState.list.items);
         this.__doForceUpdate();
-
-        // await (
-        //     new Promise(
-        //         (resolve, reject) => {
-        //             this.setSavingNoForceUpdate(SuperCalcConstants.__SAVING_STATUS_NEEDED);
-        //             stateUpdatecallback(this.applicationState) // stateUpdatecallback(appState)
-        //             this.__doForceUpdate();
-        //             resolve(true);
-        //         }
-        //     )
-        // )
-
     }
 
     setInitialStateWithNoForceUpdate(wholeAppState) {
@@ -53,7 +39,6 @@ class SuperCalcStateManager extends StateManagerBase {
         } else {
             this.applicationState = SuperCalcStateManager.__BLANK_STATUS;
         }
-
     }
 
     setTitleCallback(appState, title) {

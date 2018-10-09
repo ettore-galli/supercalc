@@ -21,13 +21,9 @@ class InputDialog extends BaseComponent {
         if (this.props.autoupdate || false) {
             superCalcStateManager.addForceUpdateComponent(this);
         }
-        if (this.props.rowId === null) {
-            this.clearFields();
-        } else {
-            let row = superCalcStateManager.getRow(this.props.rowId);
-            this.setAllFields(row);
-        }
     }
+
+
 
     buildRowFromInput() {
         return this.getAllFields();
@@ -40,6 +36,19 @@ class InputDialog extends BaseComponent {
         return (
             <Dialog
                 open={this.props.open}
+
+                onEntering={
+                    () => {
+                        console.log("onEntering", this.props)
+                        if (this.props.rowId === null) {
+                            this.clearFields();
+                        } else {
+                            let row = superCalcStateManager.getRow(this.props.rowId);
+                            this.setAllFields(row);
+                        }
+                    }
+                }
+
             >
                 <DialogTitle>{this.props.dialogTitle || "GESTIONE VOCE"}</DialogTitle>
                 <DialogContent>
@@ -78,7 +87,10 @@ class InputDialog extends BaseComponent {
                     <Button color="default" onClick={
                         () => {
                             let row = this.buildRowFromInput();
-                            superCalcStateManager.setRow(this.props.rowId, row);
+                            superCalcStateManager.setRow(
+                                this.props.rowId,
+                                row
+                            );
                             this.props.okcallback();
                         }
                     }>SAVE</Button>
