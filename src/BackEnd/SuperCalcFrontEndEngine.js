@@ -8,8 +8,18 @@ class SuperCalcFrontEndEngine {
             cbase = 127;
         }
 
+        let rcbase = 255 -  0 - 8 * (index + 1);
+        let gcbase = 255 - 8 - 4 * (index + 1);
+        let bcbase = 255 - 16 -  8 * (index + 1);
+
         let hcbase = cbase.toString(16);
-        let color = "#" + hcbase + hcbase + hcbase;
+
+        let rhcbase = rcbase.toString(16);
+        let ghcbase = gcbase.toString(16);
+        let bhcbase = bcbase.toString(16);
+
+        //let color = "#" + hcbase + hcbase + hcbase;
+        let color = "#" + rhcbase + ghcbase + bhcbase;
 
         return color;
     }

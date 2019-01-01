@@ -8,6 +8,7 @@ import AppBar from '@material-ui/core/Typography'
 import SaveButton from './SaveButton';
 import ClearListButton from './ClearListButton';
 import NewItemButton from './NewItemButton';
+import CompareButton from './CompareButton';
 
 class CustomAppBar extends React.Component {
     render() {
@@ -19,6 +20,9 @@ class CustomAppBar extends React.Component {
                 <SaveButton
                     autoupdate={true}
                 ></SaveButton>
+                <CompareButton
+                    autoupdate={true}
+                ></CompareButton>
                 <ClearListButton
                     autoupdate={true}
                 ></ClearListButton>

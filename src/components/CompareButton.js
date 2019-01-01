@@ -1,16 +1,16 @@
 import React from 'react';
 
 import IconButton from '@material-ui/core/IconButton';
-import Edit from '@material-ui/icons/Edit';
+import Help from '@material-ui/icons/Help';
 
 
 import superCalcStateManager from '../BackEnd/SuperCalcStateManager';
-import InputDialog from './InputDialog';
+import CompareDialog from './CompareDialog';
 
-class EditItemButton extends React.Component {
+class CompareButton extends React.Component {
     state = {
-        editItemDialogTitle: "Modifica articolo",
-        editItemConfirmDialogOpen: false
+        compareDialogTitle: "Comparazione prezzi",
+        compareConfirmDialogOpen: false
     };
 
     componentDidMount() {
@@ -23,7 +23,7 @@ class EditItemButton extends React.Component {
         this.setState(
             {
                 ...this.state,
-                editItemConfirmDialogOpen: true
+                compareConfirmDialogOpen: true
             }
         )
     }
@@ -32,16 +32,12 @@ class EditItemButton extends React.Component {
         this.setState(
             {
                 ...this.state,
-                editItemConfirmDialogOpen: false
+                compareConfirmDialogOpen: false
             }
         )
     }
 
-    doSaveCallback() {
-        this.closeInputDialog();
-    }
-
-    cancelEditCallback() {
+    closeCallback() {
         this.closeInputDialog();
     }
 
@@ -49,26 +45,23 @@ class EditItemButton extends React.Component {
         return (
             <span>
                 <IconButton color="primary" style={this.props.innerStyle}>
-                    <Edit
+                    <Help
                         onClick={(event) => {
                             this.openInputDialog()
                         }}
-                    >edit</Edit>
+                    >edit</Help>
                 </IconButton>
-                <InputDialog
+                <CompareDialog
                     autoupdate={true}
-                    dialogtitle={this.state.editItemDialogTitle}
-                    open={this.state.editItemConfirmDialogOpen}
-                    rowId={this.props.rowId}
-                    row={this.props.row}
-                    okcallback={() => { this.doSaveCallback() }}
-                    cancelcallback={() => { this.cancelEditCallback() }}
+                    dialogtitle={this.state.compareDialogTitle}
+                    open={this.state.compareConfirmDialogOpen}
+                    closecallback={() => { this.closeCallback() }}
                 >
-                </InputDialog>
+                </CompareDialog>
             </span>
         )
     }
 }
 
 
-export default EditItemButton;
+export default CompareButton;

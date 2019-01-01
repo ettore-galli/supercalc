@@ -39,7 +39,6 @@ class InputDialog extends BaseComponent {
 
                 onEntering={
                     () => {
-                        console.log("onEntering", this.props)
                         if (this.props.rowId === null) {
                             this.clearFields();
                         } else {
@@ -50,7 +49,7 @@ class InputDialog extends BaseComponent {
                 }
 
             >
-                <DialogTitle>{this.props.dialogTitle || "GESTIONE VOCE"}</DialogTitle>
+                <DialogTitle>{this.props.dialogtitle || "GESTIONE VOCE"}</DialogTitle>
                 <DialogContent>
                     <Grid container>
                         {loadInputFields.map((column, column_index) => {

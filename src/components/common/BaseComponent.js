@@ -14,7 +14,6 @@ class BaseComponent extends React.Component {
             } else {
                 return this.__EMPTY_FIELD_VALUE;
             }
-
         } else {
             return this.__EMPTY_FIELD_VALUE;
         }
@@ -38,13 +37,17 @@ class BaseComponent extends React.Component {
         }
     }
 
-    setFieldValue(field_name, value) {
+    setFieldValue(field_name, value, callback) {
         this.setState(
             (state) => {
                 let newState = Object.assign({}, state);
+                if (!newState.component_fields){
+                    newState.component_fields = {};
+                }
                 newState.component_fields[field_name] = value;
                 return newState;
-            }
+            },
+            callback
         )
     }
 
