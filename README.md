@@ -1,3 +1,11 @@
+Everything below the dashed line was created automatically by react
+
+I never read it (I know, i should...) and so I don't know what I have published.
+
+Since it seems reasonable at a first glance, I'll leave it there.
+
+------------------------------------------------------------------------------
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
