@@ -1,8 +1,13 @@
 # SUPERCALC
 
+## Create react app
+```shell
+npx create-react-app esempio --template typescript
+```
+
 ## Setup firebase
 
-### Create project
+### Create firebase project
 [TBD]
 
 ### Doc link collection
