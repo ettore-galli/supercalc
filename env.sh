@@ -1,13 +1,17 @@
 clear
 
-# Node path
-NODEDIR=node_modules/.bin
-NODEPATH=$(pwd)/$NODEDIR
-export PATH=$PATH:$NODEPATH
+PROJECT_HOME=$(pwd)/supercalc
+
+cd ${PROJECT_HOME}
+
+export PATH=$PATH:./node_modules
+export PATH=$PATH:./node_modules/.bin
 
 # Show settings
-echo $NODEDIR
-echo $NODEPATH
+echo ${PROJECT_HOME}
+
 echo PATH=$PATH
-echo
+
+echo "Current path:"
+echo $(pwd)
 
