@@ -25,15 +25,15 @@ class Money {
         return [integer, decimal]
     }
 
-    normalize(unnormalized: Money): Money {
-        const [div, rem] = this.idiv(unnormalized.decimal, Money.PRECISION)
-        return new Money(unnormalized.integer + div, rem);
-    }
-
-    idiv(dividend: number, divisor: number): [number, number] {
+    integerDivision(dividend: number, divisor: number): [number, number] {
         const rem = dividend % divisor;
         const quot = (dividend - rem) / divisor;
         return [quot, rem]
+    }
+
+    normalize(unnormalized: Money): Money {
+        const [div, rem] = this.integerDivision(unnormalized.decimal, Money.PRECISION)
+        return new Money(unnormalized.integer + div, rem);
     }
 
     add(other: Money): Money {
@@ -54,7 +54,11 @@ class Money {
     }
 
     div(other: Money): Money {
-        return other
+        const [quot, rem] = this.integerDivision(
+            this.integer * Money.PRECISION + this.decimal, other.integer * Money.PRECISION + other.decimal
+        );
+        const [quotd, remd] = this.integerDivision(rem, other.integer)
+        return this.normalize(new Money(quot, quotd));
     }
 
 }

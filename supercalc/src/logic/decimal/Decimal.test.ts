@@ -49,3 +49,17 @@ test.each([
   expect(da.mul(db)).toEqual(new Money(expected_integer, expected_decimal));
 
 });  
+
+test.each([
+  { a: "340", b: "2.00", expected_integer: 170, expected_decimal: 0 },
+  { a: "340", b: "3.40", expected_integer: 100, expected_decimal: 0 },
+  { a: "3.14", b: "2.00", expected_integer: 1, expected_decimal: 570000000 },
+  { a: "3", b: "7", expected_integer: 0, expected_decimal: 428571428 }
+])('Money div behaves correctly', ({ a, b, expected_integer, expected_decimal }) => {
+  const da = Money.fromRawInput(a);
+  const db = Money.fromRawInput(b);
+
+  expect(da.div(db)).toEqual(new Money(expected_integer, expected_decimal));
+
+}); 
+
