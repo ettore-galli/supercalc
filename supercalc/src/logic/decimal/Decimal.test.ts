@@ -17,7 +17,7 @@ test.each([
 
 test.each([
   { a: "1", b: "3.14", expected_integer: 4, expected_decimal: 140000000 },
-
+  { a: "1.01", b: "2.02", expected_integer: 3, expected_decimal: 30000000 }
 ])('Money sum behaves correctly', ({ a, b, expected_integer, expected_decimal }) => {
   const da = Money.fromRawInput(a);
   const db = Money.fromRawInput(b);
@@ -26,4 +26,14 @@ test.each([
 
 });
 
+test.each([
+  { a: "100", b: "0.01", expected_integer: 99, expected_decimal: 990000000 },
+  { a: "50", b: "7", expected_integer: 43, expected_decimal: 0 }
+])('Money sub behaves correctly', ({ a, b, expected_integer, expected_decimal }) => {
+  const da = Money.fromRawInput(a);
+  const db = Money.fromRawInput(b);
+
+  expect(da.sub(db)).toEqual(new Money(expected_integer, expected_decimal));
+
+});
 

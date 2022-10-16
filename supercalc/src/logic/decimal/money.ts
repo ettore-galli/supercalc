@@ -28,14 +28,14 @@ class Money {
         const decimalSum = this.decimal + other.decimal;
         const rem = decimalSum % Money.PRECISION;
         const div = (decimalSum - rem) / Money.PRECISION;
-        console.log("decimalSum", decimalSum)
-        console.log("rem", rem)
-        console.log("div", div)
         return new Money(this.integer + other.integer + div, rem);
     }
 
     sub(other: Money): Money {
-        return other
+        const decimalSub = this.decimal - other.decimal;
+        const decimal = decimalSub >= 0 ? decimalSub : Money.PRECISION + decimalSub;
+        const integer = this.integer - other.integer - (decimalSub < 0 ? 1 : 0);
+        return new Money(integer, decimal);
     }
 
     mul(other: Money): Money {
