@@ -57,7 +57,7 @@ class Money {
         const [quot, rem] = this.integerDivision(
             this.integer * Money.PRECISION + this.decimal, other.integer * Money.PRECISION + other.decimal
         );
-        const [quotd, remd] = this.integerDivision(rem, other.integer)
+        const [quotd, _] = this.integerDivision(rem, other.integer)
         return this.normalize(new Money(quot, quotd));
     }
 
