@@ -48,7 +48,9 @@ class Money {
     }
 
     mul(other: Money): Money {
-        return this.normalize(new Money(this.integer + other.integer, this.decimal + other.decimal));
+        const integer = this.integer * other.integer;
+        const decimal = this.decimal * other.integer + this.integer * other.decimal;
+        return this.normalize(new Money(integer, decimal));
     }
 
     div(other: Money): Money {
