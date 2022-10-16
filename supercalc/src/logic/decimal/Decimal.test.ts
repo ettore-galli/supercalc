@@ -37,3 +37,14 @@ test.each([
 
 });
 
+
+// test.each([
+//   { a: "3.14", b: "2.00", expected_integer: 6, expected_decimal: 280000000 },
+//   { a: "50", b: "7", expected_integer: 350, expected_decimal: 0 }
+// ])('Money mul behaves correctly', ({ a, b, expected_integer, expected_decimal }) => {
+//   const da = Money.fromRawInput(a);
+//   const db = Money.fromRawInput(b);
+
+//   expect(da.mul(db)).toEqual(new Money(expected_integer, expected_decimal));
+
+// });

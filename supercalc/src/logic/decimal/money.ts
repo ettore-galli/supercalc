@@ -15,6 +15,7 @@ class Money {
         const [integer, decimal] = Money.parseRawInput(raw_value, Money.SEPARATOR);
         return new Money(integer, decimal)
     }
+
     static parseRawInput(raw_value: string, separator: string): [number, number] {
         const parts = (raw_value.trim() + ".").split(separator);
 
@@ -24,11 +25,19 @@ class Money {
         return [integer, decimal]
     }
 
+    normalize(unnormalized: Money): Money {
+        const [div, rem] = this.idiv(unnormalized.decimal, Money.PRECISION)
+        return new Money(unnormalized.integer + div, rem);
+    }
+
+    idiv(dividend: number, divisor: number): [number, number] {
+        const rem = dividend % divisor;
+        const quot = (dividend - rem) / divisor;
+        return [quot, rem]
+    }
+
     add(other: Money): Money {
-        const decimalSum = this.decimal + other.decimal;
-        const rem = decimalSum % Money.PRECISION;
-        const div = (decimalSum - rem) / Money.PRECISION;
-        return new Money(this.integer + other.integer + div, rem);
+        return this.normalize(new Money(this.integer + other.integer, this.decimal + other.decimal));
     }
 
     sub(other: Money): Money {
@@ -39,7 +48,7 @@ class Money {
     }
 
     mul(other: Money): Money {
-        return other
+        return this.normalize(new Money(this.integer + other.integer, this.decimal + other.decimal));
     }
 
     div(other: Money): Money {
