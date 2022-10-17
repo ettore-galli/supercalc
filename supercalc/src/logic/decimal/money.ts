@@ -54,11 +54,14 @@ class Money {
     }
 
     div(other: Money): Money {
-        const [quot, rem] = this.integerDivision(
-            this.integer * Money.PRECISION + this.decimal, other.integer * Money.PRECISION + other.decimal
-        );
-        const [quotd, _] = this.integerDivision(rem, other.integer)
+        const thisAsInteger = this.integer * Money.PRECISION + this.decimal;
+        const otherAsInteger = other.integer * Money.PRECISION + other.decimal;
+
+        const [quot, rem] = this.integerDivision(thisAsInteger, otherAsInteger);
+        const [quotd, _] = this.integerDivision(rem* Money.PRECISION, otherAsInteger);
+        
         return this.normalize(new Money(quot, quotd));
+ 
     }
 
 }
