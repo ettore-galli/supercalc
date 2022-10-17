@@ -56,7 +56,9 @@ test.each([
   { a: "3.14", b: "2.00", expected_integer: 1, expected_decimal: 570000000 },
   { a: "3", b: "7", expected_integer: 0, expected_decimal: 428571428 },
   { a: "6.765", b: "5.5", expected_integer: 1, expected_decimal: 230000000 },
-  { a: "1234.567", b: "890.123", expected_integer: 1, expected_decimal: 386962251 }
+  { a: "1234.567", b: "890.123", expected_integer: 1, expected_decimal: 386962251 },
+  { a: "123456.789", b: "987654.321", expected_integer: 0, expected_decimal: 124999998 },
+  { a: "1.789", b: "0.0987", expected_integer: 18, expected_decimal: 125633232 },
 ])('Money div behaves correctly', ({ a, b, expected_integer, expected_decimal }) => {
   const da = Money.fromRawInput(a);
   const db = Money.fromRawInput(b);
