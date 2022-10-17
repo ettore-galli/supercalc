@@ -25,12 +25,6 @@ class Money {
         return [integer, decimal]
     }
 
-    integerDivision(dividend: number, divisor: number): [number, number] {
-        const rem = dividend % divisor;
-        const quot = (dividend - rem) / divisor;
-        return [quot, rem]
-    }
-
     normalize(unnormalized: Money): Money {
         const [div, rem] = this.integerDivision(unnormalized.decimal, Money.PRECISION)
         return new Money(unnormalized.integer + div, rem);
@@ -57,12 +51,18 @@ class Money {
         const thisAsInteger = this.integer * Money.PRECISION + this.decimal;
         const otherAsInteger = other.integer * Money.PRECISION + other.decimal;
 
-        const [quot, rem] = this.integerDivision(thisAsInteger, otherAsInteger);
-        const [quotd, _] = this.integerDivision(rem* Money.PRECISION, otherAsInteger);
-        
-        return this.normalize(new Money(quot, quotd));
- 
+        const [q1, r1] = this.integerDivision(thisAsInteger, otherAsInteger);
+        const [q2, _] = this.integerDivision(r1 * Money.PRECISION, otherAsInteger);
+
+        return this.normalize(new Money(q1, q2));
     }
+
+    integerDivision(alfa: number, beta: number): [number, number] {
+        const quot = Math.trunc(alfa / beta);
+        const rem = alfa - (beta * quot);
+        return [quot, rem];
+    }
+
 
 }
 
