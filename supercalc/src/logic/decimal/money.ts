@@ -66,4 +66,4 @@ class Money {
 
 }
 
-export default Money;
+export default Money; // * 3486621807
